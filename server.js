@@ -57,22 +57,37 @@ const RESTAURANT = {
 };
 
 
+    const mains = RESTAURANT.menu.filter((item) => item.category === "mains") 
+    const desserts = RESTAURANT.menu.filter((item) => item.category === "desserts") 
+    const sides = RESTAURANT.menu.filter((item) => item.category === "sides") 
+
+const sections = {
+  mains: mains,
+  desserts: desserts,
+  sides: sides
+}
 
 app.get("/", (req, res) => {
-
   res.render("home.ejs", {
-    restaurant: RESTAURANT,
-    
+    restaurant: RESTAURANT
   });
 });
 
-app.get("/:itemId", (req, res) => {
-  const index = req.params.itemId;
-  item: RESTAURANT[index];
-  res.render("show.ejs")
-})
 
 
+app.get("/menu", (req, res) => {
+  const menu = RESTAURANT.menu;
+  res.render("menu.ejs", {menu})
+});
 
+app.get("/menu/:category", (req, res) => {
+  const category = req.params.category
+  const section = sections[category]
+  console.log(section)
+  res.render("category.ejs",  {
+    name: category,
+    items: section
+  });
+});
 
 app.listen(3000);
